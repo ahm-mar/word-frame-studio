@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Frame Studio</title>
+  <link rel="stylesheet" href="taskpane.css">
+  <script src="https://appsforoffice.microsoft.com/lib/1/hosted/office.js"></script>
+  <script defer src="taskpane.js"></script>
+</head>
+<body>
+  <main class="app-shell">
+    <header class="hero">
+      <div class="mark">✦</div>
+      <div><p class="eyebrow">WORD TOOLKIT</p><h1>Frame Studio</h1><p class="subtitle">Make plain text feel designed.</p></div>
+    </header>
+
+    <section class="panel controls-panel">
+      <div class="field-row"><label for="category">Preset family</label><select id="category"><option value="frames">Frames</option><option value="shapes">ASCII shapes</option><option value="dividers">Dividers</option></select></div>
+      <div class="field-row"><label for="preset">Choose a preset</label><select id="preset"></select></div>
+      <div class="field-row"><label for="titleInput">Title <span>optional</span></label><input id="titleInput" type="text" placeholder="Your heading"></div>
+      <div class="field-row"><label for="bodyInput">Body <span>optional</span></label><textarea id="bodyInput" rows="3" placeholder="A short note, quote, or callout"></textarea></div>
+    </section>
+
+    <section class="panel preview-panel"><div class="section-label"><span>LIVE PREVIEW</span><button id="copyBtn" class="text-button">Copy</button></div><pre id="preview" aria-label="Preset preview"></pre></section>
+
+    <div class="actions"><button id="insertBtn" class="primary-button">Insert into Word</button><button id="replaceBtn" class="secondary-button">Replace selection</button></div>
+    <p id="status" class="status" role="status"></p>
+    <footer><span>Frame Studio v1.0</span><span>Best with Consolas</span></footer>
+  </main>
+</body>
+</html>
