@@ -4,54 +4,241 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Frame Studio</title>
-  <link rel="stylesheet" href="taskpane.css">
+  <link rel="stylesheet" href="taskpane.css?v=2.0.0">
   <script src="https://appsforoffice.microsoft.com/lib/1/hosted/office.js"></script>
-  <script defer src="taskpane.js"></script>
+  <script defer src="taskpane.js?v=2.0.0"></script>
 </head>
 <body>
-  <main class="app-shell">
+  <main class="app">
     <header class="hero">
-      <div class="mark">✦</div>
-      <div><p class="eyebrow">WORD TOOLKIT · v1.1</p><h1>Frame Studio</h1><p class="subtitle">Frames, shapes, and page compositions.</p></div>
+      <div class="logo" aria-hidden="true">F</div>
+      <div>
+        <p class="eyebrow">WORD FRAME STUDIO · 2.0</p>
+        <h1>Make your words stand out.</h1>
+      </div>
     </header>
-    <nav class="tabs" aria-label="Frame Studio tools">
-      <button class="tab active" data-tab="presets">Presets</button>
-      <button class="tab" data-tab="insert">Insert Page</button>
-      <button class="tab" data-tab="draw">Draw Page</button>
+
+    <div class="connection">
+      <span id="connection">Connecting to Word…</span>
+      <button id="reload" class="link" type="button">Reload</button>
+    </div>
+
+    <nav class="modes" aria-label="Design tools">
+      <button type="button" data-mode="card" aria-pressed="true">
+        Cards
+      </button>
+      <button type="button" data-mode="frame" aria-pressed="false">
+        Text frames
+      </button>
+      <button type="button" data-mode="art" aria-pressed="false">
+        ASCII art
+      </button>
     </nav>
-    <section id="presets" class="tool-section active">
-      <div class="section-intro"><h2>Preset pages</h2><p>Drop in a ready-made page frame with one click.</p></div>
-      <section class="panel">
-        <div class="field-row"><label for="presetType">Preset type</label><select id="presetType"><option value="fullFrame">Full page frame</option><option value="headerFrame">Header frame</option><option value="bottomFrame">Bottom page frame</option><option value="asciiFullFrame">ASCII full page frame</option></select></div>
-        <div class="field-row"><label for="presetTitle">Title <span>optional</span></label><input id="presetTitle" type="text" placeholder="Your heading"></div>
-        <div class="field-row"><label for="presetBody">Body <span>optional</span></label><textarea id="presetBody" rows="3" placeholder="A short note or callout"></textarea></div>
-      </section>
-      <section class="panel preview-panel"><div class="section-label"><span>LIVE PREVIEW</span><button id="copyPreset" class="text-button">Copy</button></div><pre id="presetPreview"></pre></section>
-      <button id="insertPreset" class="primary-button full-button">Insert preset into Word</button>
+
+    <section class="panel">
+      <div class="section-heading">
+        <h2>Your design</h2>
+        <button id="reset" class="link" type="button">Reset</button>
+      </div>
+
+      <div id="cardControls">
+        <label for="template">Starting point</label>
+        <select id="template">
+          <option value="note">Professional note</option>
+          <option value="warning">Important notice</option>
+          <option value="quote">Quotation</option>
+          <option value="certificate">Certificate</option>
+        </select>
+      </div>
+
+      <div id="textControls">
+        <label for="title">Title</label>
+        <input id="title" maxlength="160" autocomplete="off">
+
+        <label for="body">Body</label>
+        <textarea id="body" rows="5" maxlength="12000"></textarea>
+
+        <button id="selection" class="secondary compact" type="button"
+                data-word disabled>
+          Use selected Word text
+        </button>
+      </div>
+
+      <div id="frameControls" hidden>
+        <div class="grid">
+          <div>
+            <label for="line">Line style</label>
+            <select id="line">
+              <option value="single">Single</option>
+              <option value="double">Double</option>
+              <option value="heavy">Heavy</option>
+              <option value="round">Rounded</option>
+              <option value="ascii">ASCII</option>
+            </select>
+          </div>
+          <div>
+            <label for="width">Inner width</label>
+            <input id="width" type="number" min="16" max="90" value="42">
+          </div>
+          <div>
+            <label for="padding">Inner padding</label>
+            <input id="padding" type="number" min="0" max="5" value="1">
+          </div>
+          <div>
+            <label for="blankRows">Extra blank rows</label>
+            <input id="blankRows" type="number" min="0" max="20" value="0">
+          </div>
+        </div>
+      </div>
+
+      <div id="artControls" hidden>
+        <label for="shape">Art library</label>
+        <select id="shape"></select>
+        <label for="artText">Art editor</label>
+        <textarea id="artText" rows="9" maxlength="12000"
+                  spellcheck="false"></textarea>
+        <p class="hint">Choose a design, then edit it freely.</p>
+      </div>
     </section>
-    <section id="insert" class="tool-section">
-      <div class="section-intro"><h2>Insert page</h2><p>Choose a shape tier, preview it, then insert it at the cursor.</p></div>
-      <section class="panel">
-        <div class="field-row"><label for="insertTier">Shape level</label><select id="insertTier"><option value="simple">Simple ASCII</option><option value="mid">Mid ASCII</option><option value="complex">Complex ASCII</option></select></div>
-        <div class="field-row"><label for="insertShape">Shape</label><select id="insertShape"></select></div>
-      </section>
-      <section class="panel preview-panel"><div class="section-label"><span>SHAPE PREVIEW</span><button id="copyInsert" class="text-button">Copy</button></div><pre id="insertPreview"></pre></section>
-      <button id="insertShapeBtn" class="primary-button full-button">Insert shape into Word</button>
+
+    <section class="panel">
+      <h2>Appearance</h2>
+      <div class="grid">
+        <div>
+          <label for="font">Font</label>
+          <select id="font">
+            <option value="Calibri">Calibri</option>
+            <option value="Arial">Arial</option>
+            <option value="Georgia">Georgia</option>
+            <option value="Times New Roman">Times New Roman</option>
+          </select>
+        </div>
+        <div>
+          <label for="size">Font size, pt</label>
+          <input id="size" type="number" min="8" max="28"
+                 step="0.5" value="11">
+        </div>
+        <div>
+          <label for="align">Text alignment</label>
+          <select id="align">
+            <option value="left">Left</option>
+            <option value="center">Center</option>
+            <option value="right">Right</option>
+          </select>
+        </div>
+        <div>
+          <label for="ink">Text color</label>
+          <input id="ink" type="color" value="#243247">
+        </div>
+        <div class="card-only">
+          <label for="accent">Border color</label>
+          <input id="accent" type="color" value="#2563eb">
+        </div>
+        <div class="card-only">
+          <label for="fill">Background</label>
+          <input id="fill" type="color" value="#eff6ff">
+        </div>
+        <div class="card-only">
+          <label for="border">Border style</label>
+          <select id="border">
+            <option value="single">Single</option>
+            <option value="double">Double</option>
+            <option value="dashed">Dashed</option>
+            <option value="dotted">Dotted</option>
+          </select>
+        </div>
+        <div class="card-only">
+          <label for="weight">Border width, pt</label>
+          <input id="weight" type="number" min="0.5" max="4"
+                 step="0.5" value="1">
+        </div>
+      </div>
+      <p id="fontHint" class="hint" hidden>
+        Text frames and ASCII art use Consolas. Wide characters,
+        emoji, and right-to-left text may not align as a fixed grid.
+      </p>
     </section>
-    <section id="draw" class="tool-section">
-      <div class="section-intro"><h2>Draw page</h2><p>Build a frame from chosen shapes and tune the ASCII complexity.</p></div>
-      <section class="panel">
-        <div class="field-row"><label for="drawTier">ASCII setup</label><select id="drawTier"><option value="simple">Simple</option><option value="mid">Mid</option><option value="complex">Complex</option></select></div>
-        <div class="field-row"><label for="cornerShape">Corner shape</label><select id="cornerShape"><option value="square">Square corners</option><option value="round">Round corners</option><option value="diamond">Diamond corners</option><option value="star">Star corners</option></select></div>
-        <div class="field-row"><label for="lineShape">Line style</label><select id="lineShape"><option value="single">Single line</option><option value="double">Double line</option><option value="ascii">ASCII (+ - |)</option><option value="heavy">Heavy line</option></select></div>
-        <div class="field-row"><label for="drawTitle">Inside title <span>optional</span></label><input id="drawTitle" type="text" placeholder="Drawn title"></div>
-        <div class="field-row"><label for="drawBody">Inside body <span>optional</span></label><textarea id="drawBody" rows="2" placeholder="Drawn message"></textarea></div>
-      </section>
-      <section class="panel preview-panel"><div class="section-label"><span>DRAW PREVIEW</span><button id="copyDraw" class="text-button">Copy</button></div><pre id="drawPreview"></pre></section>
-      <button id="insertDraw" class="primary-button full-button">Insert drawn page into Word</button>
+
+    <section class="panel preview-panel">
+      <div class="section-heading">
+        <h2>Live preview</h2>
+        <span id="metrics" class="hint"></span>
+      </div>
+      <div class="preview-scroll">
+        <div id="cardPreview">
+          <div id="previewTitle"></div>
+          <div id="previewBody"></div>
+        </div>
+        <pre id="textPreview" tabindex="0" hidden></pre>
+      </div>
+      <p class="hint">
+        Preview is approximate. Word controls final layout and pagination.
+      </p>
+      <div class="button-row">
+        <button id="copy" class="secondary" type="button">Copy text</button>
+        <button id="download" class="secondary" type="button">
+          Download .txt
+        </button>
+      </div>
     </section>
-    <p id="status" class="status" role="status"></p>
-    <footer><span>Frame Studio v1.1</span><span>Best with Consolas</span></footer>
+
+    <section class="panel">
+      <h2>Insert into Word</h2>
+      <label for="destination">Placement</label>
+      <select id="destination">
+        <option value="after">At cursor / after selected text</option>
+        <option value="replace">Replace selected text</option>
+        <option value="end">End of document</option>
+      </select>
+      <p id="replaceHint" class="hint" hidden>
+        This replaces the current selection. Use Word’s Undo to reverse it.
+      </p>
+      <button id="insert" class="primary" type="button" data-word disabled>
+        Insert design
+      </button>
+    </section>
+
+    <details class="panel">
+      <summary>Saved designs</summary>
+      <p class="hint">
+        Saved in this browser profile, including the design’s text.
+        Export a backup to transfer designs.
+      </p>
+
+      <label for="designName">Design name</label>
+      <input id="designName" maxlength="60"
+             placeholder="For example: Project update">
+
+      <button id="save" class="secondary compact" type="button">
+        Save current design
+      </button>
+
+      <label for="saved">Your library</label>
+      <select id="saved"></select>
+
+      <div class="button-row">
+        <button id="load" class="secondary" type="button">Load</button>
+        <button id="delete" class="secondary" type="button">Delete</button>
+      </div>
+
+      <div class="button-row">
+        <button id="export" class="secondary" type="button">
+          Export library
+        </button>
+        <button id="import" class="secondary" type="button">
+          Import library
+        </button>
+      </div>
+      <input id="importFile" type="file" accept=".json,application/json" hidden>
+    </details>
+
+    <p id="status" role="status" aria-live="polite">
+      Choose a starting point and customize your design.
+    </p>
+
+    <footer>
+      Frame Studio 2.0 · Cards remain editable in Word
+    </footer>
   </main>
 </body>
 </html>
