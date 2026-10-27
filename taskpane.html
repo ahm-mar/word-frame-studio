@@ -12,21 +12,46 @@
   <main class="app-shell">
     <header class="hero">
       <div class="mark">✦</div>
-      <div><p class="eyebrow">WORD TOOLKIT</p><h1>Frame Studio</h1><p class="subtitle">Make plain text feel designed.</p></div>
+      <div><p class="eyebrow">WORD TOOLKIT · v1.1</p><h1>Frame Studio</h1><p class="subtitle">Frames, shapes, and page compositions.</p></div>
     </header>
-
-    <section class="panel controls-panel">
-      <div class="field-row"><label for="category">Preset family</label><select id="category"><option value="frames">Frames</option><option value="shapes">ASCII shapes</option><option value="dividers">Dividers</option></select></div>
-      <div class="field-row"><label for="preset">Choose a preset</label><select id="preset"></select></div>
-      <div class="field-row"><label for="titleInput">Title <span>optional</span></label><input id="titleInput" type="text" placeholder="Your heading"></div>
-      <div class="field-row"><label for="bodyInput">Body <span>optional</span></label><textarea id="bodyInput" rows="3" placeholder="A short note, quote, or callout"></textarea></div>
+    <nav class="tabs" aria-label="Frame Studio tools">
+      <button class="tab active" data-tab="presets">Presets</button>
+      <button class="tab" data-tab="insert">Insert Page</button>
+      <button class="tab" data-tab="draw">Draw Page</button>
+    </nav>
+    <section id="presets" class="tool-section active">
+      <div class="section-intro"><h2>Preset pages</h2><p>Drop in a ready-made page frame with one click.</p></div>
+      <section class="panel">
+        <div class="field-row"><label for="presetType">Preset type</label><select id="presetType"><option value="fullFrame">Full page frame</option><option value="headerFrame">Header frame</option><option value="bottomFrame">Bottom page frame</option><option value="asciiFullFrame">ASCII full page frame</option></select></div>
+        <div class="field-row"><label for="presetTitle">Title <span>optional</span></label><input id="presetTitle" type="text" placeholder="Your heading"></div>
+        <div class="field-row"><label for="presetBody">Body <span>optional</span></label><textarea id="presetBody" rows="3" placeholder="A short note or callout"></textarea></div>
+      </section>
+      <section class="panel preview-panel"><div class="section-label"><span>LIVE PREVIEW</span><button id="copyPreset" class="text-button">Copy</button></div><pre id="presetPreview"></pre></section>
+      <button id="insertPreset" class="primary-button full-button">Insert preset into Word</button>
     </section>
-
-    <section class="panel preview-panel"><div class="section-label"><span>LIVE PREVIEW</span><button id="copyBtn" class="text-button">Copy</button></div><pre id="preview" aria-label="Preset preview"></pre></section>
-
-    <div class="actions"><button id="insertBtn" class="primary-button">Insert into Word</button><button id="replaceBtn" class="secondary-button">Replace selection</button></div>
+    <section id="insert" class="tool-section">
+      <div class="section-intro"><h2>Insert page</h2><p>Choose a shape tier, preview it, then insert it at the cursor.</p></div>
+      <section class="panel">
+        <div class="field-row"><label for="insertTier">Shape level</label><select id="insertTier"><option value="simple">Simple ASCII</option><option value="mid">Mid ASCII</option><option value="complex">Complex ASCII</option></select></div>
+        <div class="field-row"><label for="insertShape">Shape</label><select id="insertShape"></select></div>
+      </section>
+      <section class="panel preview-panel"><div class="section-label"><span>SHAPE PREVIEW</span><button id="copyInsert" class="text-button">Copy</button></div><pre id="insertPreview"></pre></section>
+      <button id="insertShapeBtn" class="primary-button full-button">Insert shape into Word</button>
+    </section>
+    <section id="draw" class="tool-section">
+      <div class="section-intro"><h2>Draw page</h2><p>Build a frame from chosen shapes and tune the ASCII complexity.</p></div>
+      <section class="panel">
+        <div class="field-row"><label for="drawTier">ASCII setup</label><select id="drawTier"><option value="simple">Simple</option><option value="mid">Mid</option><option value="complex">Complex</option></select></div>
+        <div class="field-row"><label for="cornerShape">Corner shape</label><select id="cornerShape"><option value="square">Square corners</option><option value="round">Round corners</option><option value="diamond">Diamond corners</option><option value="star">Star corners</option></select></div>
+        <div class="field-row"><label for="lineShape">Line style</label><select id="lineShape"><option value="single">Single line</option><option value="double">Double line</option><option value="ascii">ASCII (+ - |)</option><option value="heavy">Heavy line</option></select></div>
+        <div class="field-row"><label for="drawTitle">Inside title <span>optional</span></label><input id="drawTitle" type="text" placeholder="Drawn title"></div>
+        <div class="field-row"><label for="drawBody">Inside body <span>optional</span></label><textarea id="drawBody" rows="2" placeholder="Drawn message"></textarea></div>
+      </section>
+      <section class="panel preview-panel"><div class="section-label"><span>DRAW PREVIEW</span><button id="copyDraw" class="text-button">Copy</button></div><pre id="drawPreview"></pre></section>
+      <button id="insertDraw" class="primary-button full-button">Insert drawn page into Word</button>
+    </section>
     <p id="status" class="status" role="status"></p>
-    <footer><span>Frame Studio v1.0</span><span>Best with Consolas</span></footer>
+    <footer><span>Frame Studio v1.1</span><span>Best with Consolas</span></footer>
   </main>
 </body>
 </html>
